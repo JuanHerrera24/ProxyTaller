@@ -1,0 +1,42 @@
+server:
+  port: ${PORT:8080}
+  shutdown: graceful
+  error:
+    include-stacktrace: never
+
+spring:
+  application:
+    name: microservice-monitor
+  jackson:
+    serialization:
+      write-dates-as-timestamps: false
+    default-property-inclusion: non_null
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+  endpoint:
+    health:
+      probes:
+        enabled: true
+
+monitor:
+  cors:
+    allowed-origins: ${CORS_ALLOWED_ORIGINS:*}
+  logs:
+    capacity: ${LOG_CAPACITY:5000}
+  payments:
+    failure-rate: ${PAYMENT_FAILURE_RATE:0.10}
+  simulation:
+    default-calls: 50
+    max-calls: 500
+    parallelism: 8
+
+logging:
+  level:
+    root: INFO
+    com.observability.monitor: INFO
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss.SSS} %5level [%thread] %logger{36} - %msg%n"
